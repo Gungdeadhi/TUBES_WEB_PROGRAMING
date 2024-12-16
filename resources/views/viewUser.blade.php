@@ -12,6 +12,7 @@
             <p>Price: Rp {{ number_format($product->price, 0, ',', '.') }}</p>
             <p>{{ $product->description }}</p>
             <p>Contact: {{ $product->contact }}</p>
+            <p></p>
             <img src="{{ asset('storage/' . $product->images) }}" alt="{{ $product->model }}" width="200">
         </div>
     @endforeach    

@@ -17,9 +17,8 @@ return new class extends Migration
             $table->string('model');
             $table->integer('year');
             $table->integer('price');
-            $table->text('description');
-            $table->string('contact');
             $table->string('images');
+            $table->text('description');
             $table->timestamps();
         });
     }

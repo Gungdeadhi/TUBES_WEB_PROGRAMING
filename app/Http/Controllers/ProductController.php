@@ -14,7 +14,7 @@ class ProductController extends Controller
     {
         $products = Product::all();
 
-        return view('viewProduct', compact('products'));
+        return view('postAdmin.indexAdmin', compact('products'));
     }
 
     /**
@@ -22,9 +22,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $products = Product::all();
 
-        return view('addProduct', compact('products'));
+        return view('PostAdmin.addProduct');
     }
 
     /**
@@ -38,7 +37,6 @@ class ProductController extends Controller
             'year'          => 'required|integer',
             'price'         => 'required|integer',
             'description'   => 'required|string',
-            'contact'       => 'required|string',
             'images'        => 'required|image',
         ]);
 
@@ -48,7 +46,6 @@ class ProductController extends Controller
         $product->year = $request->year;
         $product->price = $request->price;
         $product->description = $request->description;
-        $product->contact = $request->contact;  
 
         if ($request->hasFile('images')){
             $product->images = $request->file('images')->store('post/images', 'public');
@@ -74,7 +71,7 @@ class ProductController extends Controller
     {
         $product = Product::findorFail($id);
 
-        return view('editProduct', compact('product'));
+        return view('postAdmin.editProduct', compact('product'));
     }
 
     /**
@@ -88,7 +85,6 @@ class ProductController extends Controller
             'year'          => 'required|integer',
             'price'         => 'required|integer',
             'description'   => 'required|string',
-            'contact'       => 'required|string',
         ]);
 
         $product = Product::findorFail($id);
@@ -98,7 +94,6 @@ class ProductController extends Controller
         $product->year = $request->year;
         $product->price = $request->price;
         $product->description = $request->description;
-        $product->contact = $request->contact;
 
         if ($request->hasFile('images')){
             $product->images = $request->file('images')->store('post/images', 'public');

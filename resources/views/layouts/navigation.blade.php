@@ -16,6 +16,9 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>
+                <x-nav-link href="{{ route('products.index') }}" :active="request()->routeIs('post.index')">
+                        {{ __('Post') }}
+                </x-nav-link>
             </div>
 
             <!-- Settings Dropdown -->
