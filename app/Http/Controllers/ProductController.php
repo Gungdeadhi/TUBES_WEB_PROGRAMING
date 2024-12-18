@@ -17,6 +17,13 @@ class ProductController extends Controller
         return view('postAdmin.indexAdmin', compact('products'));
     }
 
+    Public function indexUser()
+    {
+        $products = Product::all();
+
+        return view('postUser.viewUser', compact('products'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */

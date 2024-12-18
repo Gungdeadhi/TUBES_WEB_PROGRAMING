@@ -19,6 +19,9 @@
                 <x-nav-link href="{{ route('products.index') }}" :active="request()->routeIs('post.index')">
                         {{ __('Post') }}
                 </x-nav-link>
+                <x-nav-link href="{{ route('products.indexUser') }}" :active="request()->routeIs('post.indexUser')">
+                        {{ __('View User') }}
+                </x-nav-link>
             </div>
 
             <!-- Settings Dropdown -->

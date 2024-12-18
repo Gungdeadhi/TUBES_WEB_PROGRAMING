@@ -20,6 +20,8 @@ Route::middleware('auth')->group(function () {
 
 
 Route::resource('/products', ProductController::class)->middleware(['auth', 'verified']);
+Route::resource('products/indexUser', [ProductController::class, 'indexUser'])->name('products.indexUser');
+
 
 
 
