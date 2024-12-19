@@ -13,14 +13,14 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
-
+        
         return view('postAdmin.indexAdmin', compact('products'));
     }
 
-    Public function indexUser()
-    {
-        $products = Product::all();
+    public function viewUser(){
 
+        $products = Product::all();
+        
         return view('postUser.viewUser', compact('products'));
     }
 

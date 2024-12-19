@@ -19,10 +19,10 @@ Route::middleware('auth')->group(function () {
 });
 
 
+
+Route::get('/products/viewUser', [ProductController::class, 'viewUser'])->name('products.viewUser');
+
 Route::resource('/products', ProductController::class)->middleware(['auth', 'verified']);
-Route::resource('products/indexUser', [ProductController::class, 'indexUser'])->name('products.indexUser');
-
-
 
 
 require __DIR__.'/auth.php';

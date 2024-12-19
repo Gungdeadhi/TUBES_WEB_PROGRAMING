@@ -1,77 +1,52 @@
-<x-app-layout>
-    <x-slot name="header"> 
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight"> 
-            {{ __('Add Product') }} 
-        </h2> 
-    </x-slot>
+<x-layout title="Create Product" :breadcrumb="['Product','Create']">
 
-    <div class="py-12"> 
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8"> 
-            <div class="bg-white overflow-hidden shadow-md sm:rounded-lg"> 
-                <div class="p-6 bg-white border-b border-gray-200"> 
-                    <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data"> 
-                        @csrf
-                        <!-- Brand -->
-                        <div class="mb-2">
-                            <x-input-label for="brand" class="text-black">Brand</x-input-label> 
-                            <input type="text" name="brand" id="brand" class="w-full form-input rounded-md shadow-sm @error('brand') border border-red-500 @enderror" placeholder="Enter brand" value="{{ old('brand') }}">
-                            @error('brand')
-                                <span class="text-red-500">{{ $message }}</span>
-                            @enderror 
-                        </div>
-
-                        <!-- Model -->
-                        <div class="mb-2">
-                            <x-input-label for="model">Model</x-input-label> 
-                            <input type="text" name="model" id="model" class="form-input rounded-md shadow-sm w-full @error('model') border border-red-500 @enderror" placeholder="Enter model" value="{{ old('model') }}">
-                            @error('model')
-                                <span class="text-red-500">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                        <!-- Tahun -->
-                        <div class="mb-2">
-                            <x-input-label for="year">Tahun</x-input-label> 
-                            <input type="text" name="year" id="year" class="form-input rounded-md shadow-sm w-full @error('year') border border-red-500 @enderror" placeholder="Enter tahun" value="{{ old('year') }}">
-                            @error('year')
-                                <span class="text-red-500">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                        <!-- Harga -->
-                        <div class="mb-2">
-                            <x-input-label for="price">Harga</x-input-label> 
-                            <input type="text" name="price" id="price" class="form-input rounded-md shadow-sm w-full @error('price') border border-red-500 @enderror" placeholder="Enter harga" value="{{ old('price') }}">
-                            @error('price')
-                                <span class="text-red-500">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                        <!-- Image -->
-                        <div class="mb-2">
-                            <x-input-label for="images">Image</x-input-label> 
-                            <input type="file" name="images" id="images" class="w-full form-input rounded-md shadow-sm @error('image') border border-red-500 @enderror"> 
-                            @error('images')
-                                <span class="text-red-500">{{ $message }}</span> 
-                            @enderror
-                        </div>
-
-                        <!-- Description -->
-                        <div class="mb-2">
-                            <x-input-label for="description">Description</x-input-label> 
-                            <textarea name="description" id="description" rows="4" class="form-input rounded-md shadow-sm w-full @error('description') border border-red-500 @enderror" placeholder="Enter product description">{{ old('description') }}</textarea>
-                            @error('description')
-                                <span class="text-red-500">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                        <!-- Submit Button -->
-                        <div>
-                            <x-primary-button type="submit">Save</x-primary-button>
-                        </div>
-                    </form>
-                </div>
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-table me-1"></i>
+                Tambah data
+            </div>
+            <div class="card-body">
+                <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-group">
+                        <label for="brand">Brand:</label>
+                        <input type="text" class="form-control @error('brand') is-invalid @enderror" id="brand" name="brand" value="{{ old('brand') }}">
+                        @error('brand')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="model">Model:</label>
+                        <input type="text" class="form-control @error('model') is-invalid @enderror" id="model" name="model" value="{{ old('model') }}">
+                        @error('model')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="year">Tahun:</label>
+                        <input type="text" class="form-control @error('year') is-invalid @enderror" id="year" name="year" value="{{ old('year') }}">
+                        @error('year')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="price">Harga:</label>
+                        <input type="text" class="form-control @error('price') is-invalid @enderror" id="price" name="price" value="{{ old('price') }}">
+                        @error('price')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Deskripsi:</label>
+                        <textarea class="form-control" id="description" name="description">{{ old('description') }}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="images">Foto Produk:</label>
+                        <input type="file" class="form-control" id="images" name="images">
+ 
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-4">Submit</button>
+                </form>
             </div>
         </div>
-    </div>
-</x-app-layout>
+</x-layout>

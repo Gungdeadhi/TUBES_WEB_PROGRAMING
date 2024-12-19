@@ -1,84 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-</head>
-<body>
+<x-layout title="Edit Product" :breadcrumb="['Product','Edit']">
 
-    <x-app-layout>
-        <x-slot name="header">
-            <h2 class="font-semibold text-x1 text-gray-800 leadeing-tigh">
-                {{ __('Edit Product') }}
-            </h2>
-        </x-slot>
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hiden shadow-md sm:roundedlg">
-                    <div class="p-6 bg-white border-b border-gray-200">
-                        <form action="{{ route('products.update', $product->id )}}" 33 method="POST" enctype="multipart/form-data">
-                            @csrf
-                            @method('PUT')
-                            <div class="mb-2">
-                                <x-input-label for="title">Brand</x-input-label>
-                                <input type="text" name="brand" class="w-full form-input rounded-md shadow-sm @error('brand') border border-red-500 @enderror" placeholder="enter blog title" value="{{ old('brand') ?? $product->brand }}">
-                                @error('brand')
-                                <span class="text-red-500">{{ $message }}</span>
-                                @enderror
-                            </div>
-
-                            <div class="mb-2">
-                                <x-input-label for="title">Model</x-input-label>
-                                <input type="text" name="model" class="w-full form-input rounded-md shadow-sm @error('model') border border-red-500 @enderror" placeholder="enter blog title" value="{{ old('model') ?? $product->model }}">
-                                @error('model')
-                                <span class="text-red-500">{{ $message }}</span>
-                                @enderror
-                            </div>
-
-                            <div class="mb-2">
-                                <x-input-label for="title">Tahun</x-input-label>
-                                <input type="text" name="year" class="w-full form-input rounded-md shadow-sm @error('brand') border border-red-500 @enderror" placeholder="enter blog title" value="{{ old('year') ?? $product->year }}">
-                                @error('year')
-                                <span class="text-red-500">{{ $message }}</span>
-                                @enderror
-                            </div>
-
-                            <div class="mb-2">
-                                <x-input-label for="title">Harga</x-input-label>
-                                <input type="text" name="price" class="w-full form-input rounded-md shadow-sm @error('price') border border-red-500 @enderror" placeholder="enter blog title" value="{{ old('price') ?? $product->price }}">
-                                @error('price')
-                                <span class="text-red-500">{{ $message }}</span>
-                                @enderror
-                            </div>
-
-                            <div class="mb-2">
-                                <x-input-label for="title">Image</x-input-label>
-                                <input type="file" name="image" class="w-full form-input rounded-md shadow-sm @error('image') border border-red-500 @enderror">
-                                @error('image')
-                                <span class="text-red-500">{{ $message }}</span>
-                                @enderror
-                            </div>
-
-                            <div class="mb-2">
-                                <x-input-label for="title">Description</x-input-label>
-                                <input type="text" name="description" class="w-full form-input rounded-md shadow-sm @error('description') border border-red-500 @enderror" placeholder="enter blog title" value="{{ old('description') ?? $product->description }}">
-                                @error('description')
-                                <span class="text-red-500">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            
-                            <div>
-                                <x-primary-button type="submit">Save</x-primary-button>
-                            </div>
-                        </form>
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-table me-1"></i>
+                Edit data
+            </div>
+            <div class="card-body">
+                <form action="{{ route('products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('put')
+                    <div class="form-group">
+                        <label for="brand">Brand:</label>
+                        <input type="text" class="form-control @error('brand') is-invalid @enderror" id="brand" name="brand" value="{{ $product->brand }}">
+                        @error('brand')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
-                </div>
+                    <div class="form-group">
+                        <label for="model">Model:</label>
+                        <input type="text" class="form-control @error('model') is-invalid @enderror" id="model" name="model" value="{{ $product->model  }}">
+                        @error('model')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="year">Tahun:</label>
+                        <input type="text" class="form-control @error('year') is-invalid @enderror" id="year" name="year" value="{{  $product->year }}">
+                        @error('year')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="price">Harga:</label>
+                        <input type="text" class="form-control @error('price') is-invalid @enderror" id="price" name="price" value="{{ $product->price }}">
+                        @error('price')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Deskripsi:</label>
+                        <textarea class="form-control" id="description" name="description">{{ $product->id }}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="images">Foto Produk:</label>
+                        <input type="file" class="form-control" id="images" name="images">
+                        <img src="{{ asset('storage/' . $product->images) }}" alt="{{ $product->model }}" class="rounded" style="width: 100%; max-width: 100px; height: auto;">
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-4">Submit</button>
+                </form>
             </div>
         </div>
-    </x-app-layout>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
-    </body>
-</html>
+</x-layout>

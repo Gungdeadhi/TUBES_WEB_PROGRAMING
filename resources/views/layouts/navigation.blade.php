@@ -15,13 +15,14 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                </div>
-                <x-nav-link href="{{ route('products.index') }}" :active="request()->routeIs('post.index')">
+                    <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.index')">
                         {{ __('Post') }}
-                </x-nav-link>
-                <x-nav-link href="{{ route('products.indexUser') }}" :active="request()->routeIs('post.indexUser')">
+                    </x-nav-link>
+                    <x-nav-link :href="route('products.viewUser')" :active="request()->routeIs('products.viewUser')">
                         {{ __('View User') }}
-                </x-nav-link>
+                    </x-nav-link>
+                </div>
+                
             </div>
 
             <!-- Settings Dropdown -->
