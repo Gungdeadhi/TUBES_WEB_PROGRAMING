@@ -389,14 +389,15 @@ button:hover {
          @foreach ($products as $product)
         <div class="items-container">
             <div class="card" style="width: 18rem;">
-                <a href="product.html">
+                <a href="{{ route('viewProduct', ['id' => $product->id]) }}">
                     <img src="{{ asset('storage/' . $product->images) }}" alt="{{ $product->model }}" class="card-img-top">
                     <div class="card-body">
+                    <h5 class="card-title">{{ $product->brand }} - {{ $product->model }}</h5>
                         <h5 class="card-title" style="color: black; text-decoration: none;">{{ $product->brand }} - {{ $product->model }}</h5>
                         <p>Rp {{ number_format($product->price, 0, ',', '.') }}</p>
                     </div>
                 </a>
-                <a href="product.html">
+                    <a href="{{ route('viewProduct', ['id' => $product->id]) }}">
                     <button type="button" class="btn btn-primary">Read More -></button>
                 </a>
             </div>
