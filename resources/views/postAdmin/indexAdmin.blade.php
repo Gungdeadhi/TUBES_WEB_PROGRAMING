@@ -16,8 +16,8 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Brand</th>
-                        <th>Model</th>
+                        <th>Merek</th>
+                        <th>Nama Motor</th>
                         <th>Tahun</th>
                         <th>Harga</th>
                         <th>Deskripsi</th>
@@ -25,31 +25,20 @@
                         <th width="280px">Action</th>
                     </tr>
                 </thead>
-                <tfoot>
-                    <tr>
-                        <th>No</th>
-                        <th>Nama</th>
-                        <th>Jenis</th>
-                        <th>Harga Jual</th>
-                        <th>Harga Beli</th>
-                        <th>Foto</th>
-                        <th>Action</th>
-                    </tr>
-                </tfoot>
-                <tbody>
+                <tbody id="product-table">
                     @foreach ( $products as $product )
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $product->brand }}</td>
-                            <td>{{ $product->model }}</td>
+                            <td>{{ $product->merek }}</td>
+                            <td>{{ $product->nama }}</td>
                             <td>{{ $product->year }}</td>
                             <td>{{ $product->price }}</td>
                             <td>{{ $product-> description }}</td>
                             <td>
                                 <img src="{{ asset('storage/' . $product->images )}}"
-                                    alt="{{ $product->model }}" class="rounded" style="width: 100%; max-width: 100px; height: auto;">
+                                    alt="{{ $product->nama }}" class="rounded" style="width: 100%; max-width: 100px; height: auto;">
                             </td>
-                            </td>
+                            
                             <td>
                                 <a href="{{ route('products.edit', $product->id) }}" class="btn btn-sm btn-warning">edit</a>
                                 <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal{{$product->id}}">

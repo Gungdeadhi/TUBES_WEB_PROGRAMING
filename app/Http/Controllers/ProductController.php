@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Images;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Collection;
 
 class ProductController extends Controller
 {
@@ -39,30 +42,44 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'brand'         => 'required|string',
-            'model'         => 'required|string',
+            'merek'         => 'required|string',
+            'nama'          => 'required|string',
             'year'          => 'required|integer',
             'price'         => 'required|integer',
             'description'   => 'required|string',
-            'images'        => 'required|image',
+            'images'        => 'required|image',  // Gambar utama
+            'image_path'    => 'nullable',
+            'image_path.*'  => 'image', // Gambar carousel
         ]);
 
         $product = new Product();
-        $product->brand = $request->brand;
-        $product->model = $request->model;
+        $product->merek = $request->merek;
+        $product->nama = $request->nama;
         $product->year = $request->year;
         $product->price = $request->price;
         $product->description = $request->description;
 
-        if ($request->hasFile('images')){
+        // Menyimpan gambar utama (produk) di kolom images
+        if ($request->hasFile('images')) {
             $product->images = $request->file('images')->store('post/images', 'public');
         }
 
         $product->save();
 
+        // Menyimpan gambar-gambar carousel ke tabel Images
+        if ($request->hasFile('image_path')) {
+            foreach ($request->file('image_path') as $image) {
+                $path = $image->store('post/products', 'public');
+                Images::create([
+                    'product_id' => $product->id,
+                    'image_path' => $path,
+                ]);
+            }
+        }
+
         return redirect()->route('products.index')->with('produk berhasil ditambahkan');
     }
-
+    
     /**
      * Display the specified resource.
      */
@@ -76,9 +93,9 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        $product = Product::findorFail($id);
-
-        return view('postAdmin.editProduct', compact('product'));
+        $product = Product::findOrFail($id);
+        $images = Images::where('product_id', $id)->get();
+        return view('postAdmin.editProduct', compact('product', 'images'));
     }
 
     /**
@@ -87,8 +104,8 @@ class ProductController extends Controller
     public function update(Request $request, string $id)
     {
         $validate = $request->validate([
-            'brand'         => 'required|string',
-            'model'         => 'required|string',
+            'merek'         => 'required|string',
+            'nama'          => 'required|string',
             'year'          => 'required|integer',
             'price'         => 'required|integer',
             'description'   => 'required|string',
@@ -96,8 +113,8 @@ class ProductController extends Controller
 
         $product = Product::findorFail($id);
 
-        $product->brand = $request->brand;
-        $product->model = $request->model;
+        $product->merek = $request->merek;
+        $product->nama = $request->nama;
         $product->year = $request->year;
         $product->price = $request->price;
         $product->description = $request->description;
@@ -107,6 +124,23 @@ class ProductController extends Controller
         }
 
         $product->save();
+
+        if ($request->hasFile('image_path')) {
+            
+            Images::where('product_id', $product->id)->delete();
+
+            $oldImages = Images::where('product_id', $product->id)->get();
+            foreach ($oldImages as $oldImage) {
+                Storage::delete('public/' . $oldImage->image_path);
+            }   
+            foreach ($request->file('image_path') as $image) {
+                $path = $image->store('post/products', 'public');
+                Images::create([
+                    'product_id' => $product->id,
+                    'image_path' => $path,
+                ]);
+            }
+        }
         return redirect()->route('products.index')->with('produk berhasil ditambahkan');
     }
 

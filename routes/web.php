@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Models\Product;
+use App\Models\Images;
 
 Route::get('/', function () {
     return view('welcome');
@@ -11,6 +13,13 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/productView/{id}', function($id){
+    $product = Product::findOrFail($id);
+    $images = Images::where('product_id', $id)->get();
+    return view('postUser.productView', compact('product', 'images'));
+})->middleware(['auth', 'verified'])->name('productView');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
