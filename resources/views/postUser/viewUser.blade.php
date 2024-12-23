@@ -464,6 +464,7 @@
         @foreach ($products as $product)
         <div class="items-container">
             <div class="card" style="width: 18rem;">
+
                 <a href="{{ route('productView', ['id' => $product->id]) }}">
                     <img src="{{ asset('storage/' . $product->images) }}" alt="{{ $product->model }}" class="card-img-top">
                     <div class="card-body">
@@ -472,6 +473,7 @@
                     </div>
                 </a>
                 <a href="{{ route('productView', ['id' => $product->id]) }}">
+
                     <button type="button" class="btn btn-primary">Read More -></button>
                 </a>
             </div>

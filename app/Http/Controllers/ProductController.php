@@ -85,8 +85,10 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $product = Product::findOrFail($id); // Ambil produk berdasarkan ID
+        return view('viewUserProduct', compact('product')); // Kirim data ke viewUserProduct.blade.php
     }
+    
 
     /**
      * Show the form for editing the specified resource.
