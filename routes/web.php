@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Models\Product;
 
+use App\Models\Images;
+
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -13,10 +16,13 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/viewProduct', function () {
-    $products = Product::all();
-    return view('postUser.viewUserProduct', compact('products'));
-})->middleware(['auth', 'verified'])->name('viewProduct');
+
+Route::get('/productView/{id}', function($id){
+    $product = Product::findOrFail($id);
+    $images = Images::where('product_id', $id)->get();
+    return view('postUser.productView', compact('product', 'images'));
+})->middleware(['auth', 'verified'])->name('productView');
+
 
 
 Route::middleware('auth')->group(function () {

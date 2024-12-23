@@ -12,13 +12,18 @@ class Product extends Model
     protected $table = 'products';
 
     protected $fillable = [
-        'brand',
-        'model',
+        'merek',
+        'nama',
         'year',
         'price',
-        'images',
         'description',
+        'images',
     ];
+
+    public function images()
+    {
+        return $this->hasMany(Images::class, 'product_id');
+    }
     
 
 }
