@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Images;
+use App\Models\ProductsSoldOut;
+use App\Models\Testimoni;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -23,8 +25,10 @@ class ProductController extends Controller
     public function viewUser(){
 
         $products = Product::all();
+        $soldOutProducts = ProductsSoldOut::all();
+        $testimoni = Testimoni::all();
         
-        return view('postUser.viewUser', compact('products'));
+        return view('postUser.viewUser', compact('products', 'soldOutProducts', 'testimoni'));
     }
 
     /**
@@ -85,8 +89,7 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        $product = Product::findOrFail($id); // Ambil produk berdasarkan ID
-        return view('viewUserProduct', compact('product')); // Kirim data ke viewUserProduct.blade.php
+        //
     }
     
 
@@ -122,6 +125,7 @@ class ProductController extends Controller
         $product->description = $request->description;
 
         if ($request->hasFile('images')){
+            Storage::delete('public/' . $product->images);
             $product->images = $request->file('images')->store('post/images', 'public');
         }
 
@@ -129,12 +133,13 @@ class ProductController extends Controller
 
         if ($request->hasFile('image_path')) {
             
-            Images::where('product_id', $product->id)->delete();
-
             $oldImages = Images::where('product_id', $product->id)->get();
             foreach ($oldImages as $oldImage) {
                 Storage::delete('public/' . $oldImage->image_path);
-            }   
+            }
+
+            Images::where('product_id', $product->id)->delete();
+
             foreach ($request->file('image_path') as $image) {
                 $path = $image->store('post/products', 'public');
                 Images::create([
@@ -151,8 +156,32 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        $product = Product::findorFail($id);
+        $product = Product::findOrFail($id);
+
+        if ($product) {
+            // Pindahkan data ke tabel soldout
+            $soldout = new ProductsSoldOut();
+            $soldout->merek = $product->merek;
+            $soldout->nama = $product->nama;
+            $soldout->year = $product->year;
+            $soldout->price = $product->price;
+
+            $sourcePath = 'post/images/' . basename($product->images); 
+            $newImagePath = 'post/soldout/' . basename($product->images); 
+    
+            Storage::makeDirectory('public/post/soldout');
+            Storage::move($sourcePath, $newImagePath);
+            $soldout->image_soldout = $newImagePath;
+            
+          
+            
+            $soldout->save();
+        }
+
+        // Hapus produk setelah data dipindahkan
         $product->delete();
+
         return redirect()->route('products.index')->with('produk berhasil dihapus');
     }
+
 }

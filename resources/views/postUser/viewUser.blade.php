@@ -485,37 +485,17 @@
     <div id="items-wrapper-soldout" class="items-wrapper-soldout">
         <h3>SOLD OUT</h3>
 
+        @foreach ($soldOutProducts as $product)
         <div class="items-container">
             <div class="card" style="width: 18rem;">
-                <img src="ASSETS/katalog product.png" class="card-img-top" alt="...">
+                <img src="{{ asset('storage/' . $product->image_soldout ) }}" alt="{{ $product->model }}" class="card-img-top">
                 <div class="card-body">
-                    <h5 class="card-title" style="color: black; text-decoration: none;">Nama Motor</h5>
-                    <p>Harga Motor</p>
+                    <h5 class="card-title" style="color: black; text-decoration: none;">{{ $product->merek }} - {{ $product->nama }}</h5>
+                    <p>{{ $product-> price }}</p>
                 </div>
             </div>
         </div>
-
-        <div class="items-container">
-            <div class="card" style="width: 18rem;">
-                <img src="ASSETS/katalog product.png" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title" style="color: black; text-decoration: none;">Nama Motor</h5>
-                    <p>Harga Motor</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="items-container">
-            <div class="card" style="width: 18rem;">
-                <img src="ASSETS/katalog product.png" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title" style="color: black; text-decoration: none;">Nama Motor</h5>
-                    <p>Harga Motor</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
+        @endforeach
 
         
 
@@ -526,16 +506,13 @@
     <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
             <h3>TESTIMONI</h3>
-            <div class="carousel-item active">
-                <img src="ASSETS/testimoni 1.png" class="d-block mx-auto" alt="testimoni 1" width="50%">
-            </div>
-            <div class="carousel-item">
-                <img src="ASSETS/testimoni 2.png" alt="testimoni 2" width="50%">
-            </div>
-            <div class="carousel-item">
-                <img src="ASSETS/testimoni 3.png" class="d-block mx-auto" alt="testimoni 3" width="50%">
-            </div>
-        </div>
+
+            @foreach ($testimoni as $testi)
+                <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
+                    <img src="{{ asset('storage/' . $testi->image_testi) }}" class="d-block mx-auto" alt="{{ $testi->id }}" width="50%">
+                </div>
+            @endforeach
+
         <button class="carousel-control-prev custom-carousel-control" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Previous</span>

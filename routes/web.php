@@ -3,18 +3,24 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ControllerTestimoni;
 use App\Models\Product;
-
 use App\Models\Images;
+use App\Models\Testimoni;
+use App\Models\ProductsSoldOut;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
+Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
+
 Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+    $total = count(Product::all());
+    return view('dashboard', compact('total'));   
+})->middleware('isAdmin')->name('dashboard');
 
 
 Route::get('/productView/{id}', function($id){
@@ -32,10 +38,11 @@ Route::middleware('auth')->group(function () {
     
 });
 
-
 Route::get('/products/viewUser', [ProductController::class, 'viewUser'])->name('products.viewUser');
 
-Route::resource('/products', ProductController::class)->middleware(['auth', 'verified']);
+Route::resource('/testimoni', ControllerTestimoni::class)->middleware(['auth', 'verified'])->middleware('isAdmin');
+
+Route::resource('/products', ProductController::class)->middleware(['auth', 'verified'])->middleware('isAdmin');
 
 
 require __DIR__.'/auth.php';

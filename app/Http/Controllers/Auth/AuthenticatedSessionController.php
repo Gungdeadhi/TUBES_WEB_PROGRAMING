@@ -28,6 +28,10 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        if (Auth::user()->role === 'user') {
+            return redirect()->route('products.viewUser'); // Change to your admin dashboard route
+        }
+
         return redirect()->intended(route('dashboard', absolute: false));
     }
 
